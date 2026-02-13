@@ -1,0 +1,46 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ABC BANK – Employee Login</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-logo"></div>
+      <div class="nav-title">ABC BANK • RISK & FRAUD DESK</div>
+    </div>
+    <div class="nav-right">Employee Access</div>
+  </div>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-title">Employee Login</div>
+      <div class="auth-subtitle">
+        Secure portal for fraud monitoring. Behavioural biometrics are captured silently.
+      </div>
+
+      <form id="employeeLoginForm">
+        <div class="form-group">
+          <label class="label" for="empId">Employee ID</label>
+          <input id="empId" class="input" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="label" for="empPass">Password</label>
+          <input id="empPass" type="password" class="input" autocomplete="off">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="margin-top:18px;">
+          Login as Employee
+        </button>
+      </form>
+
+      <div id="empMessage" class="small-muted center" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

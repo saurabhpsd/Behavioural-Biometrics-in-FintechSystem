@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Train Transaction Biometrics</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <div class="nav-logo"></div>
+    <div class="nav-title">ABC BANK • TRAIN TRANSACTION MODEL</div>
+  </div>
+</div>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-title">Collect Transaction Behaviour</div>
+    <div class="auth-subtitle">Repeat this process 20 times</div>
+
+    <form id="trainTxnForm">
+      <div class="form-group">
+        <label class="label">Owner Name (Transferrer)</label>
+        <input id="owner" class="input" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="label">Account No</label>
+        <input id="acct" class="input" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="label">Amount</label>
+        <input id="amt" class="input" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Save Pattern</button>
+    </form>
+
+    <div id="msg" class="small-muted center" style="margin-top:10px;">Ready…</div>
+
+  </div>
+</div>
+
+<script src="/js/behaviour_tracker.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+  const form = document.getElementById("trainTxnForm");
+  const msg = document.getElementById("msg");
+
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();
+
+    const owner = document.getElementById("owner").value.trim();
+    const behaviour = window.buildBehaviourVector("customer");
+
+    msg.textContent = "Saving…";
+
+    try {
+      const res = await fetch("/api/save-transaction-data",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json"},
+        body: JSON.stringify({ owner, behaviour })
+      });
+
+      const data = await res.json();
+      msg.innerHTML = "Saved. Total samples: <b>"+data.total+"</b>";
+
+    } catch(err){
+      msg.textContent = "Saving failed";
+    }
+  });
+});
+</script>
+
+</body>
+</html>

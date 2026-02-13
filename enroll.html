@@ -1,0 +1,132 @@
+<!DOCTYPE html> 
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enrollment - ABC Bank</title>
+
+<style>
+/* your same CSS — unchanged */
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}
+body{background:#020b1c;color:#fff;height:100vh;display:flex;flex-direction:column}
+header{display:flex;justify-content:space-between;align-items:center;padding:20px 40px}
+.logo{font-weight:bold;font-size:1.1rem;display:flex;align-items:center;gap:10px}
+.logo-icon{width:24px;height:24px;background:orange;border-radius:50% 0 50% 50%}
+.main-content{flex:1;display:flex;justify-content:center;align-items:center}
+.login-card{background:#0b1120;padding:40px;border-radius:15px;width:400px;
+box-shadow:0 10px 30px rgba(0,0,0,.5);border:1px solid #1c2538}
+h2{margin-bottom:10px} p.subtitle{color:#8899a6;margin-bottom:25px}
+.form-group{margin-bottom:20px} label{color:#8899a6;margin-bottom:8px;display:block}
+input{width:100%;padding:12px;background:#050912;border:1px solid #2a3b55;
+border-radius:6px;color:white}
+input:focus{border-color:#ff6b00}
+.btn-primary{width:100%;padding:12px;background:#ff6b00;border:none;
+border-radius:25px;font-size:1rem;font-weight:600;margin-top:10px;cursor:pointer}
+.btn-primary:hover{background:#e65c00}
+.status-message{text-align:center;margin-top:15px;color:#8899a6}
+.success{color:#4caf50}.error{color:#f44336}
+.footer-links{margin-top:25px;text-align:center;font-size:.85rem;color:#8899a6}
+.footer-links a{color:#ff6b00;text-decoration:none}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="logo">
+<div class="logo-icon"></div>
+ABC BANK • FRAUD TRAINING
+</div>
+</header>
+
+<div class="main-content">
+<div class="login-card">
+
+<h2>Train Your Biometric Model</h2>
+<p class="subtitle">Repeat this process 20 times.</p>
+
+<form id="enrollForm">
+<div class="form-group">
+<label>Username</label>
+<input id="username" autocomplete="off" required>
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input id="password" type="password" autocomplete="off" required>
+</div>
+
+<button type="submit" id="saveBtn" class="btn-primary">
+SAVE PATTERN
+</button>
+</form>
+
+<div id="message" class="status-message">Ready…</div>
+
+</div>
+</div>
+
+<!-- load tracker first -->
+<script src="/js/behaviour_tracker.js" defer></script>
+
+<script defer>
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("PAGE READY");
+
+  const form = document.getElementById("enrollForm");
+  const msg = document.getElementById("message");
+
+  if (!window.buildBehaviourVector) {
+    console.error("❌ behaviour_tracker.js NOT LOADED");
+    msg.textContent = "❌ Behaviour tracker failed to load.";
+    msg.className = "status-message error";
+    return;
+  }
+
+  console.log("Tracker detected ✔");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    console.log("Save clicked ✔");
+
+    const username = document.getElementById("username").value.trim();
+    const behaviour = window.buildBehaviourVector("customer");
+
+    console.log("Built behaviour:", behaviour);
+
+    msg.textContent = "Saving…";
+
+    try {
+      const res = await fetch("/api/enroll", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, behaviour })
+      });
+
+      const data = await res.json();
+      console.log("Server replied:", data);
+
+      if (!data.ok) {
+        msg.textContent = "❌ Error saving data";
+        msg.className = "status-message error";
+        return;
+      }
+
+      msg.innerHTML = `✅ Pattern Saved<br>Total samples: <b>${data.total_count}</b>`;
+      msg.className = "status-message success";
+
+      document.getElementById("username").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("username").focus();
+
+    } catch (err) {
+      console.error(err);
+      msg.textContent = "❌ Connection failed.";
+      msg.className = "status-message error";
+    }
+  });
+});
+</script>
+
+</body>
+</html>

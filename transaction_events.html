@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Transaction Events</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="navbar">
+  <div class="nav-left">
+    <div class="nav-logo"></div>
+    <div class="nav-title">ABC BANK • TRANSACTION EVENTS</div>
+  </div>
+</div>
+
+<div class="dashboard-container">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">Transaction Fraud Inbox</div>
+    </div>
+
+    <table class="table" id="txnTbl">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Owner</th>
+          <th>Account</th>
+          <th>Amount</th>
+          <th>Risk</th>
+          <th>Decision</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+async function loadTxnEvents(){
+  const res = await fetch("/api/transaction-events");
+  const evts = await res.json();
+
+  const tbody = document.querySelector("#txnTbl tbody");
+  tbody.innerHTML = "";
+
+  evts.forEach(e=>{
+    const risk = Number(e.riskScore).toFixed(2);
+    const badge = e.decision=="block" ? "badge-danger" : "badge-success";
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${e.timestamp}</td>
+      <td>${e.owner}</td>
+      <td>${e.acct}</td>
+      <td>${e.amt}</td>
+      <td><span class="${badge}">${risk}</span></td>
+      <td>${e.decision}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+window.addEventListener("DOMContentLoaded",loadTxnEvents);
+</script>
+
+</body>
+</html>

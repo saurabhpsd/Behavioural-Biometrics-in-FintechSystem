@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ABC BANK – My Accounts</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-logo"></div>
+      <div class="nav-title">ABC BANK • RETAIL</div>
+    </div>
+    <div class="nav-right" id="userWelcome">Hello, User</div>
+  </div>
+
+  <div class="dashboard-container">
+
+    <!-- MAIN ACCOUNT CARD -->
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <div class="balance-label">Account Balance</div>
+          <div class="balance-main">
+            <span id="balanceAmount">10000.000</span> INR
+          </div>
+        </div>
+        <span class="badge">Primary Account</span>
+      </div>
+
+      <!-- NEW BUTTON: Make Transaction -->
+      <button id="makeTxnBtn" class="orange-btn" style="margin-bottom: 14px;">
+        Make a Transaction
+      </button>
+
+      <button class="orange-btn">Activate</button>
+
+      <!-- ICON GRID -->
+      <div class="icon-grid">
+        <div class="icon-tile">
+          <div class="icon-circle"></div>
+          <div class="icon-label">Buy Insurance</div>
+        </div>
+        <div class="icon-tile">
+          <div class="icon-circle"></div>
+          <div class="icon-label">Monthly Planner</div>
+        </div>
+        <div class="icon-tile">
+          <div class="icon-circle"></div>
+          <div class="icon-label">Mobile Recharge</div>
+        </div>
+        <div class="icon-tile">
+          <div class="icon-circle"></div>
+          <div class="icon-label">Transfer to Card</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECENT TRANSACTIONS TABLE -->
+    <div class="card" style="margin-top: 18px;">
+      <div class="card-header">
+        <div class="card-title">Recent Transactions</div>
+        <a href="#" class="small-muted">View all</a>
+      </div>
+
+      <table class="table" id="txTable">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Description</th>
+            <th>Amount (INR)</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Filled by JS -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- JS SECTION -->
+  <script>
+    // Welcome message
+    const params = new URLSearchParams(window.location.search);
+    const user = params.get("user") || "Customer";
+    document.getElementById("userWelcome").textContent = "Hello, " + user;
+
+    // Populate dummy transactions
+    const rows = [
+      ["09 Dec 2025", "POS Purchase – Grocery Store", "-1200.300", "Success"],
+      ["08 Dec 2025", "Salary Credit", "+820.000", "Success"],
+      ["07 Dec 2025", "Mobile Recharge", "-5000.000", "Success"],
+      ["05 Dec 2025", "Online Transfer", "-1200.000", "Success"]
+    ];
+    const tbody = document.getElementById("txTable").querySelector("tbody");
+    tbody.innerHTML = "";
+    rows.forEach(r => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `<td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td>${r[3]}</td>`;
+      tbody.appendChild(tr);
+    });
+
+    // NEW: Redirect to transaction page
+    document.getElementById("makeTxnBtn").addEventListener("click", () => {
+      window.location.href = "transaction.html?user=" + encodeURIComponent(user);
+    });
+  </script>
+
+</body>
+</html>

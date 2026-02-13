@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ABC BANK – Secure Transaction</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<div class="navbar">
+    <div class="nav-left">
+        <div class="nav-logo"></div>
+        <div class="nav-title">ABC BANK • SECURE TRANSACTION</div>
+    </div>
+</div>
+
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-title">Make a Transaction</div>
+    <div class="auth-subtitle">Behavioural biometrics are analysed for fraud detection</div>
+
+    <form id="txnForm">
+      <div class="form-group">
+        <label class="label">Name of Transferrer (Owner)</label>
+        <input id="txnOwner" class="input" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="label">To Account Number</label>
+        <input id="txnAccount" class="input" autocomplete="off">
+      </div>
+
+      <div class="form-group">
+        <label class="label">Amount (INR)</label>
+        <input id="txnAmount" type="number" class="input" autocomplete="off">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Proceed to Pay</button>
+    </form>
+
+    <div id="txnMessage" class="small-muted center" style="margin-top:10px;"></div>
+
+  </div>
+</div>
+
+<!-- Behaviour tracker must load -->
+<script src="/js/behaviour_tracker.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+
+  const form = document.getElementById("txnForm");
+  form.addEventListener("submit",async e=>{
+    e.preventDefault();
+
+    const owner = document.getElementById("txnOwner").value.trim();
+    const acct  = document.getElementById("txnAccount").value.trim();
+    const amt   = document.getElementById("txnAmount").value.trim();
+
+    const behaviour = window.buildBehaviourVector("customer");
+
+    const msg = document.getElementById("txnMessage");
+    msg.textContent = "Processing…";
+
+    try {
+      const res = await fetch("/api/transaction-check",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body: JSON.stringify({ owner, acct, amt, behaviour })
+      });
+
+      const data = await res.json();
+
+      if(!data.allowed){
+        window.location.href = "/transaction_blocked.html";
+        return;
+      }
+
+      window.location.href = "/transaction_success.html";
+
+    } catch(err){
+      console.error(err);
+      msg.textContent = "Transaction failed due to network error";
+    }
+  });
+});
+</script>
+</body>
+</html>

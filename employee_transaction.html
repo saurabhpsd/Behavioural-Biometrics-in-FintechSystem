@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ABC BANK – TRANSACTION FRAUD ANALYTICS</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+  <div class="nav-left">
+    <div class="nav-logo"></div>
+    <div class="nav-title">ABC BANK • TRANSACTION FRAUD ANALYTICS</div>
+  </div>
+
+  <div class="nav-right">
+    Real-time transaction fraud alerts
+    &nbsp;&nbsp;
+    <a href="employee_dashboard.html" 
+       class="btn btn-primary" 
+       style="padding:6px 12px; background:#f97316; color:#111827; text-decoration:none;">
+      Back to Login Overview
+    </a>
+  </div>
+</div>
+
+
+<div class="dashboard-container">
+
+  <div class="dashboard-grid">
+
+    <!-- ===================================== -->
+    <!-- TRANSACTION EVENTS INBOX              -->
+    <!-- ===================================== -->
+    <div class="card" style="min-height:380px;">
+      <div class="card-header">
+        <div class="card-title">Transaction Events Inbox</div>
+        <span class="badge">Transactions Only</span>
+      </div>
+
+      <table class="table" id="txnTable">
+        <thead>
+          <tr>
+            <th>Time</th>
+            <th>Owner</th>
+            <th>Account</th>
+            <th>Amount</th>
+            <th>Risk</th>
+            <th>Decision</th>
+            <th>Model</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <!-- ===================================== -->
+    <!-- RIGHT-SIDE DETAILS PANEL              -->
+    <!-- ===================================== -->
+    <div class="card" style="min-height:380px;">
+      <div class="card-header">
+        <div class="card-title">Selected Transaction Details</div>
+        <span class="badge">Explainable AI</span>
+      </div>
+
+      <div id="txnSessionDetails" style="color:#e5e7eb; font-size:0.9rem;">
+        Select a transaction event from the left to view behavioural metrics.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="js/employee_transaction.js"></script>
+</body>
+</html>

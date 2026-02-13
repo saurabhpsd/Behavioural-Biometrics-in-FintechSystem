@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ABC BANK – Fraud Analyst Dashboard</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <div class="navbar">
+    <div class="nav-left">
+      <div class="nav-logo"></div>
+      <div class="nav-title">ABC BANK • FRAUD ANALYTICS</div>
+    </div>
+
+    <div class="nav-right">
+      Real-time behavioural alerts
+
+      <!-- ====================== ADDED BUTTON ====================== -->
+      <a href="employee_transaction.html"
+         style="margin-left:20px;padding:8px 18px;
+                background:#f97316;color:#111827;
+                border-radius:20px;font-weight:600;
+                font-size:0.8rem;text-decoration:none;">
+        Transaction Overview
+      </a>
+      <!-- =========================================================== -->
+
+    </div>
+  </div>
+
+  <div class="dashboard-container">
+    <div class="dashboard-grid">
+
+      <!-- LEFT SIDE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Login Events Inbox</div>
+          <span class="badge">Customer & Employee</span>
+        </div>
+
+        <table class="table" id="eventsTable">
+          <thead>
+            <tr>
+              <th>Time</th>
+              <th>User</th>
+              <th>Role</th>
+              <th>Risk Score</th>
+              <th>Decision</th>
+              <th>Model</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Filled by JS from Node API -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- RIGHT SIDE -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">Selected Session Details</div>
+          <span class="badge">Explainable AI</span>
+        </div>
+
+        <div class="risk-circle">
+          <div class="risk-inner">
+            <div class="risk-score" id="selRiskScore">--</div>
+            <div class="risk-status" id="selRiskStatus">Select a row</div>
+          </div>
+        </div>
+
+        <h4 style="margin-top:8px;">Model explanation</h4>
+        <pre id="selExplanation"
+             style="font-size:0.75rem;background:#020617;border-radius:12px;
+                    border:1px solid #111827;padding:10px;max-height:160px;
+                    overflow:auto;"></pre>
+
+        <h4 style="margin-top:8px;">Behavioural features</h4>
+        <pre id="selFeatures"
+             style="font-size:0.75rem;background:#020617;border-radius:12px;
+                    border:1px solid #111827;padding:10px;margin-top:6px;
+                    max-height:220px;overflow:auto;"></pre>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/employee_dashboard.js"></script>
+</body>
+</html>
